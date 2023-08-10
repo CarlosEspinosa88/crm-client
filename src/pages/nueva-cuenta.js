@@ -1,7 +1,28 @@
 import React from 'react';
 import Layout from '@/components/Layout';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 function NuevaCuenta() {
+  const formik = useFormik({
+    initialValues: {
+      nombre: '',
+      apellido: '',
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      nombre: Yup.string().required('El nombre es requerido'),
+      apellido: Yup.string().required('El apellido es requerido'),
+      email: Yup.string().email('El email no es valido').required('El email es requerido'),
+      password: Yup.string().required('El password es requerido').min(6, 'El password debe ser de 6 caracteres'),
+    }),
+    onSubmit: valores => {
+      console.log('enviado')
+      console.log(valores)
+    }
+  })
+
   return (
     <>
       <Layout>
@@ -10,8 +31,11 @@ function NuevaCuenta() {
           </h1>
           <div className="flex justify-center mt-5">
             <div className="w-full max-w-sm">
-              <form className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4">
-              <div className="mb-4">
+              <form 
+                onSubmit={formik.handleSubmit}
+                className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4"
+              >
+                <div className="mb-4">
                   <label
                     htmlFor="nombre"
                     className="block text-slate-800 text-sm font-bold mb-2"
@@ -20,12 +44,21 @@ function NuevaCuenta() {
                   </label>
                   <input 
                     id="nombre"
+                    value={formik.values.nombre}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     type="text"
                     name="nombre"
                     placeholder="Nombre usuario"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
                   />
                 </div>
+                {formik.touched.nombre && formik.errors.nombre ? (
+                  <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-200 p-4">
+                    <p className="font-bold">Error</p>
+                    <p>{formik.errors.nombre}</p>
+                  </div>
+                ) : null}
                 <div className="mb-4">
                   <label
                     htmlFor="apellido"
@@ -35,12 +68,20 @@ function NuevaCuenta() {
                   </label>
                   <input 
                     id="apellido"
+                    value={formik.values.apellido}
+                    onChange={formik.handleChange}
                     type="text"
                     name="apellido"
                     placeholder="Apellido usuario"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
                   />
                 </div>
+                {formik.touched.apellido && formik.errors.apellido ? (
+                  <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-200 p-4">
+                    <p className="font-bold">Error</p>
+                    <p>{formik.errors.apellido}</p>
+                  </div>
+                ) : null}
                 <div className="mb-4">
                   <label
                     htmlFor="email"
@@ -50,12 +91,20 @@ function NuevaCuenta() {
                   </label>
                   <input 
                     id="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
                     type="email"
                     name="email"
                     placeholder="Email usuario"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
                   />
                 </div>
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-200 p-4">
+                    <p className="font-bold">Error</p>
+                    <p>{formik.errors.email}</p>
+                  </div>
+                ) : null}
                 <div className="mb-4">
                   <label
                     htmlFor="password"
@@ -65,12 +114,20 @@ function NuevaCuenta() {
                   </label>
                   <input 
                     id="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
                     type="password"
                     name="password"
                     placeholder="Password usuario"
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
                   />
                 </div>
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-200 p-4">
+                    <p className="font-bold">Error</p>
+                    <p>{formik.errors.password}</p>
+                  </div>
+                ) : null}
                 <input
                   type="submit"
                   value="Crear cuenta"
@@ -82,7 +139,6 @@ function NuevaCuenta() {
       </Layout>
     </>
   )
-  
 }
 
 export default NuevaCuenta
