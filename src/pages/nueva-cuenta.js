@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import * as Yup from 'yup';
+import { useMutation, gql } from '@apollo/client';
+
+const NUEVA_CUENTA = gql`
+  mutation NuevoUsuario($input: UsuarioInput) {
+    nuevoUsuario(input: $input) {
+      nombre
+      apellido
+      email
+      creado
+    }
+  }
+`
 
 function NuevaCuenta() {
+  const [ mensaje, guardarMensaje ] = useState(null)
+  const router = useRouter()
+  const [ nuevoUsuario ] = useMutation(NUEVA_CUENTA)
   const formik = useFormik({
     initialValues: {
       nombre: '',
@@ -17,16 +33,49 @@ function NuevaCuenta() {
       email: Yup.string().email('El email no es valido').required('El email es requerido'),
       password: Yup.string().required('El password es requerido').min(6, 'El password debe ser de 6 caracteres'),
     }),
-    onSubmit: valores => {
-      console.log('enviado')
-      console.log(valores)
+    onSubmit: async (valores) => {
+      try {
+        const { data } = await nuevoUsuario({
+          variables: {
+            input: {
+              nombre: valores.nombre,
+              apellido: valores.apellido,
+              email: valores.email,
+              password: valores.password
+            }
+          }
+        })
+
+        guardarMensaje(`Se creó correctamente el Usuario ${data.nuevoUsuario.nombre}`);
+        
+        setTimeout(() => {
+          guardarMensaje(null);
+          router.push('/login')
+        }, 3000)
+
+      } catch (error) {
+        guardarMensaje(error.message.replace('GraphQL error: ', ''));
+
+        setTimeout(() => {
+          guardarMensaje(null);
+        }, 3000)
+      }
     }
   })
+
+  function mensajeDeLaApi() {
+    return (
+      <div className="bg-white py-2 px-3 max-w-sm my-3 text-center mx-auto">
+        <p>{mensaje}</p>
+      </div>
+    )
+  }
 
   return (
     <>
       <Layout>
-      <h1 className="text-center text-2xl font-light">
+          {mensaje ? mensajeDeLaApi() : null}
+          <h1 className="text-center text-2xl font-light">
             Crear nueva cuenta
           </h1>
           <div className="flex justify-center mt-5">

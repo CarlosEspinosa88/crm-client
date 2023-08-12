@@ -1,8 +1,5 @@
 import React from "react"
 import Layout from '@/components/Layout'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
 
 function Productos() {
   return (
