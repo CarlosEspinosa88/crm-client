@@ -46,7 +46,7 @@ function NuevaCuenta() {
           }
         })
 
-        guardarMensaje(`Se creó correctamente el Usuario ${data.nuevoUsuario.nombre}`);
+        guardarMensaje(`Creando usuario ${data.nuevoUsuario.nombre}`);
         
         setTimeout(() => {
           guardarMensaje(null);
@@ -66,7 +66,7 @@ function NuevaCuenta() {
   function mensajeDeLaApi() {
     return (
       <div className="bg-white py-2 px-3 max-w-sm my-3 text-center mx-auto">
-        <p>{mensaje}</p>
+        <p className='text-gray-800 font-light'>{mensaje}</p>
       </div>
     )
   }
