@@ -41,7 +41,6 @@ function Login() {
         const { token } = data.autenticarUsuario
         localStorage.setItem('token', token)
 
-        
         setTimeout(() => {
           guardarMensaje(null)
           router.push('/')
