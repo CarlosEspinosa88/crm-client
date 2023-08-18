@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
 import { useQuery, gql } from '@apollo/client'
 
@@ -15,7 +16,20 @@ const OBTENER_CLIENTES = gql`
 `
 
 export default function Home() {
+  const router = useRouter()
   const { data, loading, error } = useQuery(OBTENER_CLIENTES)
+
+  if (loading) {
+    return (
+      <div>
+        <p>Cargando...</p>
+      </div>
+    )
+  }
+
+  if (!data?.obtenerClientesVendedor) {
+    return router.push('/login')
+  }
 
   return (
     <div>

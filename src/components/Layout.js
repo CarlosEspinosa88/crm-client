@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Sidebar from "@/components/Sidebar"
+import HeaderBar from "@/components/HeaderBar"
 import { useRouter } from "next/router";
 import { Roboto } from 'next/font/google'
 
@@ -29,6 +30,7 @@ function Layout({ children }) {
           <div className="flex min-h-screen">
             <Sidebar />
             <main className="sm:w-2/3 xl:w-4/5 sm:min-h-screen p-5"  >
+              <HeaderBar />
               {children}
             </main>
           </div>
