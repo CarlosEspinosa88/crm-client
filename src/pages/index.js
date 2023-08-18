@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import Layout from '@/components/Layout'
 import { useQuery, gql } from '@apollo/client'
+
 
 const OBTENER_CLIENTES = gql`
   query ObtenerClientesVendedor {
@@ -22,23 +24,24 @@ export default function Home() {
   if (loading) {
     return (
       <div>
-        <p>Cargando...</p>
+        <p className="text-gray-800 font-light" >Loading....</p>
       </div>
     )
   }
 
   if (!data?.obtenerClientesVendedor) {
-    return router.push('/login')
+    router.push('/login')
   }
 
   return (
     <div>
-      <Layout>
-        {loading ? (
-          <p className="text-gray-800 font-light" >Loading....</p>
-        ) : (
+      {!loading && data ? (
+        <Layout>
           <>
             <h1 className='text-slate-700 text-2xl font-light'>Clientes</h1>
+            <Link href="/nuevo-cliente" className="bg-gray-800 py-2 px-5 mt-3 inline-block text-white rounded text-sm hover:bg-gray-800 mb-3 uppercase" >
+              Nuevo cliente
+            </Link>
             <table className='table-auto shadow-md mt-10 w-full w-lg'>
               <thead className='bg-slate-800'>
                 <tr className=' text-white'>
@@ -64,8 +67,8 @@ export default function Home() {
               </tbody>
             </table>
           </>
-        )}
-      </Layout>
+        </Layout>
+      ) : null}
   </div>
   )
 }

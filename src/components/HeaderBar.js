@@ -31,7 +31,7 @@ function HeaderBar() {
   
   return (
     <div className="flex justify-between mb-6 ">
-      <p className="text-slate-800 text-sm mr-2">Hola {data?.obtenerUsuario?.nombre} {data?.obtenerUsuario?.apellido}</p>
+      <p className="text-slate-800 text-sm mr-2">Hola: {data?.obtenerUsuario?.nombre} {data?.obtenerUsuario?.apellido}</p>
       <button
         onClick={cerrarSesion}
         type="button" 
