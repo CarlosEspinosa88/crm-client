@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useMutation, gql } from '@apollo/client';
+import * as Yup from 'yup';
 
 const AUTENTICAR_NUEVO_USUARIO = gql`
   mutation AutenticarUsuario($input: AutenticarInput) {

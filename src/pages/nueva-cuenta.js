@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import * as Yup from 'yup';
 import { useMutation, gql } from '@apollo/client';
+import * as Yup from 'yup';
 
 const NUEVA_CUENTA = gql`
   mutation NuevoUsuario($input: UsuarioInput) {
