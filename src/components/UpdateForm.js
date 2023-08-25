@@ -1,7 +1,8 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import { useFormik, Formik, withFormik, Form } from 'formik';
 import * as Yup from 'yup';
-
+import Swal from 'sweetalert2';
 
 const schemaValidation = Yup.object({
   nombre: Yup.string().required('El nombre es requerido'),
@@ -12,6 +13,7 @@ const schemaValidation = Yup.object({
 })
 
 function UpdateForm(props) {
+  const router = useRouter();
   async function actualizarInfoCliente(event) {
     event.preventDefault();
     
@@ -27,7 +29,13 @@ function UpdateForm(props) {
         }
       }})
 
-      console.log("DATA", data)
+      Swal.fire(
+        'Actualizado!',
+        'El cliente e actualizado correctamente',
+        'success'
+      );
+
+      router.push('/');
     } catch (error) {
       console.log(error)
     }
@@ -42,7 +50,7 @@ function UpdateForm(props) {
           htmlFor="nombre"
           className="block text-slate-800 text-sm font-bold mb-2"
         >
-          Nombre Nu
+          Nombre
         </label>
         <input 
           id="nombre"
