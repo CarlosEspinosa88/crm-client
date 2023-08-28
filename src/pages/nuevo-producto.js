@@ -4,83 +4,86 @@ import { useRouter } from 'next/router'
 import { useFormik } from 'formik'
 import { useMutation, gql } from '@apollo/client'
 import * as Yup from 'yup'
+import Swal from 'sweetalert2';
 
-const NUEVO_CLIENTE = gql`
-  mutation NuevoCliente($input: ClienteInput) {
-    nuevoCliente(input: $input) {
+const AGREGAR_NUEVO_PRODUCTO = gql`
+  mutation NuevoProducto($input: ProductoInput) {
+    nuevoProducto(input: $input) {
       id
       nombre
-      apellido
-      empresa
-      telefono
-      vendedor
+      existencia
+      precio
     }
   }
 `
 
-const OBTENER_CLIENTES = gql`
-  query ObtenerClientesVendedor {
-    obtenerClientesVendedor {
+const OBTENER_PRODUCTOS = gql`
+  query ObtenerProductos {
+    obtenerProductos {
       id
       nombre
-      apellido
-      empresa
-      vendedor
+      precio
+      existencia
+      creado
     }
   }
 `
 
-function NuevoCliente() {
-  const [mensaje, guardarMensaje] = useState(null)
+function NuevoProducto() {
   const router = useRouter()
-  const [ nuevoCliente ] = useMutation(NUEVO_CLIENTE, { 
-    update(cache, { data: { nuevoCliente }}) {
-      const { obtenerClientesVendedor } = cache.readQuery({ query: OBTENER_CLIENTES})
+  const [mensaje, guardarMensaje] = useState(null)
+  const [ nuevoProducto ] = useMutation(AGREGAR_NUEVO_PRODUCTO, {
+    update(cache, { data: nuevoProducto }) {
+      
+      const { obtenerProductos } = cache.readQuery({
+        query: OBTENER_PRODUCTOS
+      })
 
       cache.writeQuery({
-        query: OBTENER_CLIENTES,
-        data: { 
-          obtenerClientesVendedor: [
-            ...obtenerClientesVendedor,
-            nuevoCliente
+        query: OBTENER_PRODUCTOS,
+        data: {
+          obtenerProductos: [
+            ...obtenerProductos, nuevoProducto
           ]
         }
       })
-
     }
   })
-
   const formik = useFormik({
     initialValues: {
       nombre: '',
-      apellido: '',
-      empresa: '',
-      email: '',
-      telefono: ''
+      existencia: '',
+      precio: '',
     },
     validationSchema: Yup.object({
       nombre: Yup.string().required('El nombre del cliente es obligatorio'),
-      apellido: Yup.string().required('El apellido del cliente es obligatorio'),
-      empresa: Yup.string().required('El campo empresa es obligatorio'),
-      email: Yup.string().email('Email no válido').required('El email del cliente es obligatio'),
-      telefono: Yup.string()
+      existencia: Yup.number()
+        .required('La cantidad disponible es obligatorio')
+        .positive('No se aceltan números negativos')
+        .integer('Debe ser números enteros'),
+      precio: Yup.number()
+        .required('El precio es obligatorio')
+        .positive('No se aceptan números negativos')
     }),
     onSubmit: async (valores) => {
       try {
-        const { data } = await nuevoCliente({
+        const { data } = await nuevoProducto({
           variables: {
             input: {
               nombre: valores.nombre,
-              apellido: valores.apellido,
-              empresa: valores.empresa,
-              email: valores.email,
-              telefono: valores.telefono
+              existencia: valores.existencia,
+              precio: valores.precio
             }
           }
         })
+        
+        Swal.fire(
+          'Creado!',
+          'Se creó el prodcuto correctamente',
+          'success'
+        );
 
-        console.log(data.nuevoCliente)
-        router.push('/')
+        router.push('/productos')
       } catch (error) {
         guardarMensaje(error.message.replace('GraphQL error: ', ''));
 
@@ -101,7 +104,7 @@ function NuevoCliente() {
 
   return (
     <Layout>
-      <h1 className='text-slate-700 text-2xl font-light'>Crear nuevo cliente</h1>
+      <h1 className='text-slate-700 text-2xl font-light'>Crear nuevo producto</h1>
       {mensaje ? mensajeDeLaApi() : null}
       <div className='flex justify-center mt-5'>
         <div className='w-full max-w-lg'>
@@ -123,7 +126,7 @@ function NuevoCliente() {
                 value={formik.values.nombre}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                placeholder="Nombre Cliente"
+                placeholder="Nombre Producto"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
               />
             </div>
@@ -137,103 +140,59 @@ function NuevoCliente() {
 
             <div className="mb-4">
               <label
-                htmlFor="apellido"
+                htmlFor="existencia"
                 className="block text-slate-800 text-sm font-bold mb-2"
               >
-                Apellido
+                Cantidad Disponible
               </label>
               <input 
-                id="apellido"
-                type="text"
-                name="apellido"
-                value={formik.values.apellido}
+                id="existencia"
+                type="number"
+                name="existencia"
+                value={formik.values.existencia}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                placeholder="Apellido Cliente"
+                placeholder="Cantidad Disponible"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
               />
             </div>
 
-            {formik.touched.apellido && formik.errors.apellido ? (
+            {formik.touched.existencia && formik.errors.existencia ? (
               <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-800 p-4">
                 <p className="font-bold">Error</p>
-                <p>{formik.errors.apellido}</p>
+                <p>{formik.errors.existencia}</p>
               </div>
             ) : null}
 
             <div className="mb-4">
               <label
-                htmlFor="empresa"
+                htmlFor="precio"
                 className="block text-slate-800 text-sm font-bold mb-2"
               >
-                Empresa
+                Precio
               </label>
               <input 
-                id="empresa"
-                type="text"
-                name="empresa"
-                value={formik.values.empresa}
+                id="precio"
+                type="number"
+                name="precio"
+                value={formik.values.precio}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                placeholder="Empresa Cliente"
+                placeholder="Precio Producto"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
               />
             </div>
 
-            {formik.touched.empresa && formik.errors.empresa ? (
+            {formik.touched.precio && formik.errors.precio ? (
               <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-800 p-4">
                 <p className="font-bold">Error</p>
-                <p>{formik.errors.empresa}</p>
+                <p>{formik.errors.precio}</p>
               </div>
             ) : null}
 
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-slate-800 text-sm font-bold mb-2"
-              >
-                Email
-              </label>
-              <input 
-                id="email"
-                type="email"
-                name="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder="Email Cliente"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
-              />
-            </div>
-
-            {formik.touched.email && formik.errors.email ? (
-              <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-800 p-4">
-                <p className="font-bold">Error</p>
-                <p>{formik.errors.email}</p>
-              </div>
-            ) : null}
-
-            <div className="mb-4">
-              <label
-                htmlFor="telefono"
-                className="block text-slate-800 text-sm font-bold mb-2"
-              >
-                Teléfono
-              </label>
-              <input 
-                id="telefono"
-                type="tel"
-                name="telefono"
-                value={formik.values.telefono}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder="Teléfono Cliente"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
-              />
-            </div>
             <input
               type="submit"
-              value="Registrar cliente"
+              value="Agregar nuevo producto"
               className="block bg-slate-800 w-full mt-5 p-2 uppercase rounded hover:bg-slate-900"
             />
           </form>
@@ -243,4 +202,4 @@ function NuevoCliente() {
   )
 }
 
-export default  NuevoCliente
+export default NuevoProducto
