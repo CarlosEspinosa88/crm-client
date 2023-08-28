@@ -1,5 +1,6 @@
 import React from 'react'
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/router'
 import { useMutation, gql } from "@apollo/client"
 
 const ELIMINAR_PRODUCTO = gql`
@@ -22,6 +23,7 @@ const OBTENER_PRODUCTOS = gql`
 
 
 export default function Product({ producto }) {
+  const router = useRouter()
   const { id, nombre, existencia, precio } = producto;
   const [ eliminarProducto ] = useMutation(ELIMINAR_PRODUCTO, {
     update(cache) {
@@ -66,6 +68,14 @@ export default function Product({ producto }) {
     })
   }
 
+  function editarProducto() {
+    router.push({
+      pathname: "/editar-producto/[id]",
+      query: { id }
+    })
+    
+  }
+
   return (
     <tr>
       <td className='border px-4 py-2 text-gray-800'>
@@ -93,7 +103,7 @@ export default function Product({ producto }) {
         <button
           type="button"
           className="flex justify-center items-center bg-green-600 px-4 py-2 w-full text-white rounded text-xs font-bold"
-          // onClick={editarCliente}
+          onClick={editarProducto}
         >
           Editar
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-2">

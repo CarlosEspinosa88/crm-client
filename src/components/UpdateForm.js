@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { useFormik, Formik, withFormik, Form } from 'formik';
+import { withFormik, Form } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 
@@ -31,7 +31,7 @@ function UpdateForm(props) {
 
       Swal.fire(
         'Actualizado!',
-        'El cliente e actualizado correctamente',
+        'El cliente se actualizó correctamente',
         'success'
       );
 
@@ -40,6 +40,7 @@ function UpdateForm(props) {
       console.log(error)
     }
   }
+
   return (
     <Form
       onSubmit={actualizarInfoCliente}
