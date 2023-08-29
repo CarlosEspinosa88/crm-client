@@ -20,6 +20,19 @@ const OBTENER_CLIENTE = gql`
   }
 `
 
+const OBTENER_CLIENTES = gql`
+  query ObtenerClientesVendedor {
+    obtenerClientesVendedor {
+      id
+      nombre
+      apellido
+      email
+      empresa
+      vendedor
+    }
+  }
+`
+
 const ACTUALIZAR_CLIENTE = gql`
   mutation ActualizarCliente($id: ID!, $input: ClienteInput) {
     actualizarCliente(id: $id, input: $input) {
@@ -34,7 +47,22 @@ const ACTUALIZAR_CLIENTE = gql`
 export default function EditarCliente() {
   const router = useRouter();  
   const { data, loading, error } = useQuery(OBTENER_CLIENTE, { variables: { id: router?.query?.id } })
-  const [ actualizarCliente ] = useMutation(ACTUALIZAR_CLIENTE)
+  const [ actualizarCliente ] = useMutation(ACTUALIZAR_CLIENTE, {
+    update(cache, { data: clienteActualizado }) {
+      const { obtenerClientesVendedor } = cache.readQuery({ query: OBTENER_CLIENTES })
+
+      cache.writeQuery({
+        query: OBTENER_CLIENTES,
+        data: {
+          obtenerClientesVendedor: {
+            ...obtenerClientesVendedor,
+            clienteActualizado
+          }
+        }
+      })
+
+    }
+  })
 
   if (loading) {
     return (
@@ -47,7 +75,6 @@ export default function EditarCliente() {
   return (
     <Layout>
       <h1 className='text-slate-700 text-2xl font-light'>Editar cliente</h1>
-      {/* {mensaje ? mensajeDeLaApi() : null} */}
       <div className='flex justify-center mt-5'>
         <div className='w-full max-w-lg'>
           <UpdateForm
@@ -55,7 +82,7 @@ export default function EditarCliente() {
             cliente={data.obtenerCliente}
           />
         </div>
-      </div>        
+      </div>
     </Layout>
   )
 }

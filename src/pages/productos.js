@@ -48,7 +48,7 @@ function Productos() {
                 </thead>
                 <tbody className='bg-white'>
                   {data?.obtenerProductos?.map(producto => (
-                      <Product key={producto.id} producto={producto} />
+                    <Product key={producto.id} producto={producto} />
                   ))}
                 </tbody>
               </table>

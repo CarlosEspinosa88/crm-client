@@ -39,7 +39,7 @@ function NuevoCliente() {
 
       cache.writeQuery({
         query: OBTENER_CLIENTES,
-        data: { 
+        data: {
           obtenerClientesVendedor: [
             ...obtenerClientesVendedor,
             nuevoCliente
