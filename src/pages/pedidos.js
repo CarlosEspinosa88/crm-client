@@ -4,7 +4,7 @@ import Link from "next/link"
 import Order from "@/components/Order"
 import { gql, useQuery } from "@apollo/client"
 
-const OBETENER_PEDIDOS_VENDEDOR = gql`
+const OBTENER_PEDIDOS_VENDEDOR = gql`
   query ObtenerPedidosVendedor {
     obtenerPedidosVendedor {
       id
@@ -29,12 +29,7 @@ const OBETENER_PEDIDOS_VENDEDOR = gql`
 `
 
 function Pedidos() {
-
-  const { data, loading, error } = useQuery(OBETENER_PEDIDOS_VENDEDOR)
-
-  // console.log(loading)
-  // console.log(error)
-  // console.log(data)
+  const { data, loading, error } = useQuery(OBTENER_PEDIDOS_VENDEDOR)
 
   if (loading) {
     return (
@@ -43,6 +38,7 @@ function Pedidos() {
       </Layout>
     )
   }
+
   return (
     <div>
       {!loading && data ? (
