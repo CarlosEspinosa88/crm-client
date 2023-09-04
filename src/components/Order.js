@@ -1,0 +1,89 @@
+import React, { useState } from 'react'
+
+const ESTADO_PEDIDO = {
+  "PENDIENTE": "border-yellow-500",
+  "COMPLETADO": "border-green-500",
+  "CANCELADO": "border-red-800",
+}
+
+export default function Order({ pedidos }) {
+  const { id, cliente: { nombre, apellido, email, telefono }, total, estado } = pedidos
+  const [estadoPedido, guardarEstadoPedido] = useState(estado)
+
+  function cambiarEstadoPedido(event) {
+    guardarEstadoPedido(event.target.value)
+  }
+
+  return (
+    <div className={`${ESTADO_PEDIDO[estado]} border-t-4 mt-4 bg-white rounded p-6 md:grid md:grid-cols-2 md:gap-4 shadow-lg`}>
+      <div>
+        <p className="font-bold text-slate-800 mt-2">
+          Cliente: {nombre} {apellido}
+        </p>
+
+        {email ? (
+          <p className="flex justify-start pt-2 w-full text-slate-500 text-xs">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z" />
+            </svg>
+              {email}
+            </p>
+        ) : null}
+
+        {telefono ? (
+        <p className="flex justify-start py-2 w-full text-slate-500 text-xs">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+          </svg>
+          {telefono}
+        </p>
+        ) : null}
+
+        <h2 className="font-bold text-slate-800 mt-10">
+          Estado pedido: {estado}
+        </h2>
+        <select value={estadoPedido} onChange={cambiarEstadoPedido} className="mt-2 appearance-none bg-blue-600 p-2 text-center rounded leading-tight focus:outline-none focus:bg-blue-600 focus:border-blue-500 uppercase text-xs font-bold">
+          <option value="PENDIENTE">PENDIENTE</option>
+          <option value="COMPLETADO">COMPLETADO</option>
+          <option value="CANCELADO">CANCELADO</option>
+        </select>
+      </div>
+      
+      <div>
+        <h2 className="text-slate-800 font-bold mt-2">Resumen del pedido</h2>
+        {pedidos.pedido.map((articulo, index) => (
+          <div key={articulo.id} className="mt-5">
+            <p className="text-slate-800 text-sm">
+              Nombre producto: {articulo.nombre}
+            </p>
+            <p className="text-slate-800 text-sm">
+              Cantidad: {articulo.cantidad}
+            </p>
+          </div>
+        ))}
+        
+        <div>
+          <p className="text-slate-800 text-sm mt-3 font-bold">
+            Total a pagar: 
+            <span className="text-slate-800 font-light ml-2">
+              $ {total}
+            </span>
+          </p>
+        </div>
+
+        <div className="mt-4">
+          <button
+            type="button"
+            className="flex justify-center items-center bg-red-800 px-4 py-2 w-full text-white rounded text-xs font-bold"
+            // onClick={confirmarEliminarProducto}
+          >
+            Eliminar pedido
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
