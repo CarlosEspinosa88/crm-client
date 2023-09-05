@@ -28,7 +28,7 @@ function Productos() {
   }
 
   return (
-    <div>
+    <>
       {!loading && data ? (
         <Layout>
           <>
@@ -36,7 +36,8 @@ function Productos() {
             <Link href="/nuevo-producto" className="bg-slate-800 py-2 px-5 mt-3 inline-block text-white rounded text-sm hover:bg-slate-900 mb-3 uppercase">
               Nuevo Producto
             </Link>
-            <table className='table-auto shadow-md mt-10 w-full w-lg'>
+            <div className="overflow-x-scroll">
+              <table className='table-auto shadow-md mt-10 w-full w-lg'>
                 <thead className='bg-slate-800'>
                   <tr className=' text-white'>
                     <th className='w-1/5 py-2'>Nombre</th>
@@ -52,10 +53,11 @@ function Productos() {
                   ))}
                 </tbody>
               </table>
+            </div>
           </>
         </Layout>
       ) : null}
-    </div>
+    </>
   )
 }
 

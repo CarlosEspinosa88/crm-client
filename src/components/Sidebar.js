@@ -25,6 +25,21 @@ function Sidebar() {
           </Link>
         </li>
       </nav>
+    <div className="mt-10">
+      <p className='text-slate-500 text-2xl'>Favoritos</p>
+      <nav className="mt-5 list-none">
+        <li className={`${router.pathname === "/mejores-vendedores" ? 'bg-gray-700 mb-2 p-2': 'p-2 mb-2'}`}>
+          <Link href="/mejores-vendedores" className="block">
+            Mejores Vendedores
+          </Link>
+        </li>
+        <li className={`${router.pathname === "/mejores-clientes" ? 'bg-gray-700 mb-2 p-2': 'p-2 mb-2'}`}>
+          <Link href="/mejores-clientes" className="block">
+            Mejores Clientes
+          </Link>
+        </li>
+        </nav>
+      </div>
     </aside>
   )
 }
