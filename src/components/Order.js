@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import Swal from 'sweetalert2';
+import { gql, useMutation } from '@apollo/client'
 
 const ESTADO_PEDIDO = {
   "PENDIENTE": "border-yellow-500",
@@ -6,12 +8,94 @@ const ESTADO_PEDIDO = {
   "CANCELADO": "border-red-800",
 }
 
+const ACTUALIZAR_PEDIDO = gql`
+  mutation ActualizarPedido($id: ID!, $input: PedidoInput) {
+    actualizarPedido(id: $id, input: $input) {
+      id
+      estado
+      pedido {
+        id
+        cantidad
+      }
+    }
+  }
+`
+
+const ELIMINAR_PEDIDO = gql`
+  mutation EliminarPedido($id: ID!) {
+    eliminarPedido(id: $id)
+  }
+`
+
+const OBTENER_PEDIDOS_VENDEDOR = gql`
+  query ObtenerPedidosVendedor {
+    obtenerPedidosVendedor {
+      id
+    }
+  }
+`
+
 export default function Order({ pedidos }) {
   const { id, cliente: { nombre, apellido, email, telefono }, total, estado } = pedidos
   const [estadoPedido, guardarEstadoPedido] = useState(estado)
+  const [ actualizarPedido ] = useMutation(ACTUALIZAR_PEDIDO)
+  const [ eliminarPedido ] = useMutation(ELIMINAR_PEDIDO, {
+    update(cache) {
+      const { obtenerPedidosVendedor } = cache.readQuery({ query: OBTENER_PEDIDOS_VENDEDOR })
 
-  function cambiarEstadoPedido(event) {
-    guardarEstadoPedido(event.target.value)
+      cache.writeQuery({
+        query: OBTENER_PEDIDOS_VENDEDOR,
+        data: {
+          obtenerPedidosVendedor: obtenerPedidosVendedor.filter(pedido => pedido.id !== id)
+        }
+      })
+    }
+  })
+
+  async function cambiarEstadoPedido(event) {
+    try {
+      const { data } = await actualizarPedido({
+        variables: {
+          id,
+          input: {
+            estado: event.target.value,
+            cliente: pedidos.cliente.id
+          }
+        }
+      });
+
+      guardarEstadoPedido(data.actualizarPedido.estado)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function confirmarEliminarPedido() {
+    Swal.fire({
+      title: 'Deseas eliminar este pedido?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Eliminar!',
+      cancelButtonText: 'No, cancelar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const { data } = await eliminarPedido({
+            variables: { id }
+          })
+          Swal.fire(
+            'Correcto!',
+            data.eliminarPedido,
+            'success'
+          )
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    })
   }
 
   return (
@@ -75,7 +159,7 @@ export default function Order({ pedidos }) {
           <button
             type="button"
             className="flex justify-center items-center bg-red-800 px-4 py-2 w-full text-white rounded text-xs font-bold"
-            // onClick={confirmarEliminarProducto}
+            onClick={confirmarEliminarPedido}
           >
             Eliminar pedido
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-2">

@@ -20,10 +20,32 @@ const NUEVO_PEDIDO = gql`
   }
 `
 
+const OBTENER_PEDIDOS_VENDEDOR = gql`
+  query ObtenerPedidosVendedor {
+    obtenerPedidosVendedor {
+      id
+    }
+  }
+`
+
 export default function NuevoPedido() {
   const router = useRouter()
   const [ mensaje, setMensaje ] = useState(null)
-  const [ nuevoPedido ] = useMutation(NUEVO_PEDIDO)
+  const [ nuevoPedido ] = useMutation(NUEVO_PEDIDO, {
+    update(cache, { data: { nuevoPedido }}) {
+      const { obtenerPedidosVendedor } = cache.readQuery({ query: OBTENER_PEDIDOS_VENDEDOR})
+
+      cache.writeQuery({
+        query: OBTENER_PEDIDOS_VENDEDOR,
+        data: {
+          obtenerPedidosVendedor: [
+            ...obtenerPedidosVendedor,
+            nuevoPedido
+          ]
+        }
+      })
+    }
+  })
   const pedidoContext = useContext(PedidoContext);
   const { cliente, total, productos } = pedidoContext
 
@@ -45,15 +67,13 @@ export default function NuevoPedido() {
         }
       })
 
-      router.push('/pedidos')
+      router.push('/pedidos');
 
       Swal.fire(
         'Correcto',
         'El pedido se registró correctamente',
         'success'
       );
-
-      console.log(data)
     } catch (error) {
       setMensaje(error.message.replace('GraphQL error: ', ''));
 
