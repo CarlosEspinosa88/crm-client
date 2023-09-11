@@ -3,9 +3,8 @@ import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context'
 import fetch from "node-fetch"
 
-
 const cache = new InMemoryCache();
-const httpLink = createHttpLink({ uri: 'http://localhost:4000/', fetch })
+const httpLink = createHttpLink({ uri: process.env.NEXT_PUBLIC_DB_HOST, fetch })
 
 const setAuthorizationLink = setContext( async (_, { headers }) => {
   const token = localStorage.getItem('token')
