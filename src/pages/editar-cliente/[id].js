@@ -1,50 +1,15 @@
+import * as Yup from 'yup';
+
 import React from 'react'
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
-import { useQuery, gql, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { useFormik, Formik, withFormik, Form } from 'formik';
-import * as Yup from 'yup';
 import { formikEnhancer as UpdateForm } from '@/components/UpdateForm';
+import { OBTENER_CLIENTES, OBTENER_CLIENTE } from "@/config/queries"
+import { ACTUALIZAR_CLIENTE } from "@/config/mutations"
 
-const OBTENER_CLIENTE = gql`
-  query ObtenerCliente($id: ID!) {
-    obtenerCliente(id: $id) {
-      id
-      nombre
-      apellido
-      email
-      empresa
-      vendedor
-      telefono
-    }
-  }
-`
-
-const OBTENER_CLIENTES = gql`
-  query ObtenerClientesVendedor {
-    obtenerClientesVendedor {
-      id
-      nombre
-      apellido
-      email
-      empresa
-      vendedor
-    }
-  }
-`
-
-const ACTUALIZAR_CLIENTE = gql`
-  mutation ActualizarCliente($id: ID!, $input: ClienteInput) {
-    actualizarCliente(id: $id, input: $input) {
-      id
-      nombre
-      apellido
-      vendedor
-    }
-  }
-`
-
-export default function EditarCliente() {
+function EditarCliente() {
   const router = useRouter();  
   const { data, loading, error } = useQuery(OBTENER_CLIENTE, { variables: { id: router?.query?.id } })
   const [ actualizarCliente ] = useMutation(ACTUALIZAR_CLIENTE, {
@@ -86,3 +51,5 @@ export default function EditarCliente() {
     </Layout>
   )
 }
+
+export default EditarCliente

@@ -1,28 +1,11 @@
 import React from 'react'
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router'
-import { useMutation, gql } from "@apollo/client"
+import { useMutation } from "@apollo/client"
+import { OBTENER_PRODUCTOS } from "@/config/queries"
+import { ELIMINAR_PRODUCTO } from "@/config/mutations"
 
-const ELIMINAR_PRODUCTO = gql`
-  mutation EliminarProducto($id: ID!) {
-    eliminarProducto(id: $id)
-  }
-`
-
-const OBTENER_PRODUCTOS = gql`
-  query ObtenerProductos {
-    obtenerProductos {
-      id
-      nombre
-      precio
-      existencia
-      creado
-    }
-  }
-`
-
-
-export default function Product({ producto }) {
+function Product({ producto }) {
   const router = useRouter()
   const { id, nombre, existencia, precio } = producto;
   const [ eliminarProducto ] = useMutation(ELIMINAR_PRODUCTO, {
@@ -114,3 +97,5 @@ export default function Product({ producto }) {
     </tr>
   )
 }
+
+export default Product

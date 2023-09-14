@@ -1,20 +1,10 @@
 import React from "react"
-import Layout from '@/components/Layout'
-import { useQuery, gql } from '@apollo/client'
-import Product from "@/components/Product"
 import Link from "next/link"
+import Layout from '@/components/Layout'
+import Product from "@/components/Product"
+import { useQuery } from '@apollo/client'
+import { OBTENER_PRODUCTOS } from '@/config/queries'
 
-const OBTENER_PRODUCTOS = gql`
-  query ObtenerProductos {
-    obtenerProductos {
-      id
-      nombre
-      precio
-      existencia
-      creado
-    }
-  }
-`
 
 function Productos() {
   const { data, loading, error } = useQuery(OBTENER_PRODUCTOS)

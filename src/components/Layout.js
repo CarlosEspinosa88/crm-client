@@ -3,14 +3,7 @@ import Head from "next/head";
 import Sidebar from "@/components/Sidebar"
 import HeaderBar from "@/components/HeaderBar"
 import { useRouter } from "next/router";
-import { Roboto } from 'next/font/google'
-
-const roboto = Roboto({ 
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'], 
-  display: 'swap',
-})
+import { roboto } from "@/utils/fonts"
 
 function Layout({ children }) {
   const router = useRouter()

@@ -1,45 +1,12 @@
 import React from 'react'
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
-import { useQuery, gql, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
+import { ACTUALIZAR_PRODUCTO } from '@/config/mutations'
+import { OBTENER_PRODUCTOS, OBTENER_PRODUCTO } from '@/config/queries'
 import { formikEnhancer as UpdateProductForm } from '@/components/UpdateProductForm';
 
-const OBTENER_PRODUCTO = gql`
-  query ObtenerProducto($id: ID!) {
-    obtenerProducto(id: $id) {
-      id
-      nombre
-      precio
-      existencia
-      creado
-    }
-  }
-`
-
-const OBTENER_PRODUCTOS = gql`
-  query ObtenerProductos {
-    obtenerProductos {
-      id
-      nombre
-      precio
-      existencia
-      creado
-    }
-  }
-`
-
-const ACTUALIZAR_PRODUCTO = gql`
-  mutation ActualizarProducto($id: ID!, $input: ProductoInput) {
-    actualizarProducto(id: $id, input: $input) {
-      nombre
-      precio
-      existencia
-      creado
-    }
-  }
-`
-
-export default function EditarProducto() {
+function EditarProducto() {
   const router = useRouter();
   const { data, loading, error } = useQuery(OBTENER_PRODUCTO, {
     variables: { id: router?.query?.id }
@@ -68,7 +35,6 @@ export default function EditarProducto() {
       </Layout>
     )
   }
-  
 
   return (
     <Layout>
@@ -84,3 +50,5 @@ export default function EditarProducto() {
     </Layout>
   )
 }
+
+export default EditarProducto

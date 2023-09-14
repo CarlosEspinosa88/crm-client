@@ -3,7 +3,7 @@ import {
   SELECCIONAR_PRODUCTO,
   CANTIDAD_PRODUCTOS,
   ACTUALIZAR_TOTAL
- } from "../../types";
+ } from "@/types/index";
 
  const payload = (state, action ) => {
   switch (action?.type) {

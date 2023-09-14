@@ -1,33 +1,13 @@
+import * as Yup from 'yup'
+
 import React, { useState } from 'react'
+import Swal from 'sweetalert2';
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
 import { useFormik } from 'formik'
-import { useMutation, gql } from '@apollo/client'
-import * as Yup from 'yup'
-import Swal from 'sweetalert2';
-
-const AGREGAR_NUEVO_PRODUCTO = gql`
-  mutation NuevoProducto($input: ProductoInput) {
-    nuevoProducto(input: $input) {
-      id
-      nombre
-      existencia
-      precio
-    }
-  }
-`
-
-const OBTENER_PRODUCTOS = gql`
-  query ObtenerProductos {
-    obtenerProductos {
-      id
-      nombre
-      precio
-      existencia
-      creado
-    }
-  }
-`
+import { useMutation } from '@apollo/client'
+import { AGREGAR_NUEVO_PRODUCTO } from '@/config/mutations'
+import { OBTENER_PRODUCTOS } from '@/config/queries'
 
 function NuevoProducto() {
   const router = useRouter()

@@ -6,7 +6,7 @@ import {
   SELECCIONAR_PRODUCTO,
   CANTIDAD_PRODUCTOS,
   ACTUALIZAR_TOTAL
- } from "../../types";
+ } from "@/types/index";
  
  function PedidoState({ children }) {
   const initialState = {
