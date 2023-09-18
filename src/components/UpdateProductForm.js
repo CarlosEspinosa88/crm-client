@@ -1,8 +1,9 @@
+import * as Yup from 'yup';
+
 import React from 'react'
+import Swal from 'sweetalert2';
 import { useRouter } from 'next/router'
 import { withFormik, Form } from 'formik';
-import * as Yup from 'yup';
-import Swal from 'sweetalert2';
 
 const schemaValidation = Yup.object({
   nombre: Yup.string().required('El nombre del cliente es obligatorio'),

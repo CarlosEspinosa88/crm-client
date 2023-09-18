@@ -1,34 +1,12 @@
+import * as Yup from 'yup'
+
 import React, { useState } from 'react'
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
 import { useFormik } from 'formik'
-import { useMutation, gql } from '@apollo/client'
-import * as Yup from 'yup'
-
-const NUEVO_CLIENTE = gql`
-  mutation NuevoCliente($input: ClienteInput) {
-    nuevoCliente(input: $input) {
-      id
-      nombre
-      apellido
-      empresa
-      telefono
-      vendedor
-    }
-  }
-`
-
-const OBTENER_CLIENTES = gql`
-  query ObtenerClientesVendedor {
-    obtenerClientesVendedor {
-      id
-      nombre
-      apellido
-      empresa
-      vendedor
-    }
-  }
-`
+import { useMutation } from '@apollo/client'
+import { NUEVO_CLIENTE } from '@/config/mutations'
+import { OBTENER_CLIENTES } from '@/config/queries'
 
 function NuevoCliente() {
   const [mensaje, guardarMensaje] = useState(null)

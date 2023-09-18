@@ -1,20 +1,12 @@
+import * as Yup from 'yup';
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import { useMutation, gql } from '@apollo/client';
-import * as Yup from 'yup';
+import { useMutation } from '@apollo/client';
+import { NUEVA_CUENTA } from '@/config/mutations'
 
-const NUEVA_CUENTA = gql`
-  mutation NuevoUsuario($input: UsuarioInput) {
-    nuevoUsuario(input: $input) {
-      nombre
-      apellido
-      email
-      creado
-    }
-  }
-`
 
 function NuevaCuenta() {
   const [ mensaje, guardarMensaje ] = useState(null)

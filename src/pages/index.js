@@ -1,25 +1,13 @@
+import React from 'react';
 import Image from 'next/image'
 import Link from 'next/link'
 import Layout from '@/components/Layout'
 import Client from '@/components/Client'
 import { useRouter } from 'next/router'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { OBTENER_CLIENTES } from '@/config/queries'
 
-
-const OBTENER_CLIENTES = gql`
-  query ObtenerClientesVendedor {
-    obtenerClientesVendedor {
-      id
-      nombre
-      apellido
-      email
-      empresa
-      vendedor
-    }
-  }
-`
-
-export default function Home() {
+function Home() {
   const router = useRouter()
   const { data, loading, error } = useQuery(OBTENER_CLIENTES)
 
@@ -68,3 +56,5 @@ export default function Home() {
   </div>
   )
 }
+
+export default Home

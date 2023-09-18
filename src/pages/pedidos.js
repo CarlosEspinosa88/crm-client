@@ -2,34 +2,11 @@ import React from "react"
 import Layout from '@/components/Layout'
 import Link from "next/link"
 import Order from "@/components/Order"
-import { gql, useQuery } from "@apollo/client"
-
-const OBTENER_PEDIDOS_VENDEDOR = gql`
-  query ObtenerPedidosVendedor {
-    obtenerPedidosVendedor {
-      id
-      pedido {
-        nombre
-        cantidad
-        id
-      }
-      total
-      cliente {
-        id
-        nombre
-        apellido
-        email
-        telefono
-      }
-      vendedor
-      creado
-      estado
-    }
-  }
-`
+import { useQuery } from "@apollo/client"
+import { OBTENER_PEDIDOS_VENDEDOR_COMPLETO } from '@/config/queries'
 
 function Pedidos() {
-  const { data, loading, error } = useQuery(OBTENER_PEDIDOS_VENDEDOR)
+  const { data, loading, error } = useQuery(OBTENER_PEDIDOS_VENDEDOR_COMPLETO)
 
   if (loading) {
     return (

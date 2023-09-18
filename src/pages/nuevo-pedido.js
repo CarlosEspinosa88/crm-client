@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import Link from "next/link"
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 
 import Layout from '@/components/Layout'
 import AssignOrders from '@/components/orders/AssignOrders'
@@ -10,25 +10,10 @@ import AssingProducts from '@/components/orders/AssingProducts'
 import ResumeOrder from '@/components/orders/ResumeOrder'
 import Total from '@/components/orders/Total'
 import PedidoContext from '@/context/pedidos/PedidoContext'
+import { NUEVO_PEDIDO } from '@/config/mutations'
+import { OBTENER_PEDIDOS_VENDEDOR } from '@/config/queries'
 
-
-const NUEVO_PEDIDO = gql`
-  mutation NuevoPedido($input: PedidoInput) {
-    nuevoPedido(input: $input) {
-      id
-    }
-  }
-`
-
-const OBTENER_PEDIDOS_VENDEDOR = gql`
-  query ObtenerPedidosVendedor {
-    obtenerPedidosVendedor {
-      id
-    }
-  }
-`
-
-export default function NuevoPedido() {
+function NuevoPedido() {
   const router = useRouter()
   const [ mensaje, setMensaje ] = useState(null)
   const [ nuevoPedido ] = useMutation(NUEVO_PEDIDO, {
@@ -110,3 +95,5 @@ export default function NuevoPedido() {
     </Layout>
   )
 }
+
+export default NuevoPedido

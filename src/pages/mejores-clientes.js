@@ -1,21 +1,8 @@
 import React from 'react'
 import Layout from '@/components/Layout';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { gql, useQuery } from '@apollo/client';
-
-const MEJORES_CLIENTES = gql`
-  query MejoresClientes {
-    mejoresClientes {
-      cliente {
-        nombre,
-        apellido
-        empresa
-        vendedor
-      },
-      total
-    }
-  }
-`
+import { MEJORES_CLIENTES } from "@/config/queries"
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function MejoresClientes() {
   const { data, loading, error, startPolling, stopPolling } = useQuery(MEJORES_CLIENTES)

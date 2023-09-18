@@ -1,41 +1,11 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2';
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
+import { OBTENER_PEDIDOS_VENDEDOR } from "@/config/queries"
+import { ACTUALIZAR_PEDIDO, ELIMINAR_PEDIDO } from "@/config/mutations"
+import { ESTADO_PEDIDO } from "@/utils/constants"
 
-const ESTADO_PEDIDO = {
-  "PENDIENTE": "border-yellow-500",
-  "COMPLETADO": "border-green-500",
-  "CANCELADO": "border-red-800",
-}
-
-const ACTUALIZAR_PEDIDO = gql`
-  mutation ActualizarPedido($id: ID!, $input: PedidoInput) {
-    actualizarPedido(id: $id, input: $input) {
-      id
-      estado
-      pedido {
-        id
-        cantidad
-      }
-    }
-  }
-`
-
-const ELIMINAR_PEDIDO = gql`
-  mutation EliminarPedido($id: ID!) {
-    eliminarPedido(id: $id)
-  }
-`
-
-const OBTENER_PEDIDOS_VENDEDOR = gql`
-  query ObtenerPedidosVendedor {
-    obtenerPedidosVendedor {
-      id
-    }
-  }
-`
-
-export default function Order({ pedidos }) {
+function Order({ pedidos }) {
   const { id, cliente: { nombre, apellido, email, telefono }, total, estado } = pedidos
   const [estadoPedido, guardarEstadoPedido] = useState(estado)
   const [ actualizarPedido ] = useMutation(ACTUALIZAR_PEDIDO)
@@ -171,3 +141,5 @@ export default function Order({ pedidos }) {
     </div>
   )
 }
+
+export default Order

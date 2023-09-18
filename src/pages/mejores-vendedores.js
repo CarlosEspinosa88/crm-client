@@ -1,20 +1,8 @@
 import React, { useEffect } from 'react'
 import Layout from '@/components/Layout';
+import { useQuery } from '@apollo/client';
+import { MEJORES_VENDEDORES } from '@/config/queries'
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { gql, useQuery } from '@apollo/client';
-
-const MEJORES_VENDEDORES = gql`
-  query MejoresVendedores {
-    mejoresVendedores {
-      vendedor {
-        nombre
-        apellido
-        email
-      }
-      total
-    }
-  }
-`
 
 function MejoresVendedores() {
   const { data, loading, error, startPolling, stopPolling } = useQuery(MEJORES_VENDEDORES)
