@@ -1,22 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Select from 'react-select'
 import PedidoContext from '@/context/pedidos/PedidoContext'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { OBTENER_CLIENTES } from "@/config/queries"
 
-const OBTENER_CLIENTES = gql`
-  query ObtenerClientesVendedor {
-    obtenerClientesVendedor {
-      id
-      nombre
-      apellido
-      email
-      empresa
-      vendedor
-    }
-  }
-`
-
-export default function AssignOrders() {
+function AssignOrders() {
   const [ cliente, setClientes ] = useState([]);
   const pedidoContext = useContext(PedidoContext);
   const { data , loading, error } = useQuery(OBTENER_CLIENTES);
@@ -50,3 +38,5 @@ export default function AssignOrders() {
     </>
   )
 }
+
+export default AssignOrders

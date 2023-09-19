@@ -1,21 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router'
-import { useQuery, gql } from '@apollo/client';
-
-const OBTENER_USUARIO = gql`
-  query ObtenerUsuario {
-    obtenerUsuario {
-      id
-      nombre
-      apellido
-      email
-    }
-  }
-`
+import { useQuery } from '@apollo/client';
+import { OBTENER_USUARIO } from "@/config/queries"
 
 function HeaderBar() {
   const route = useRouter()
   const { data, loading, error } = useQuery(OBTENER_USUARIO)
+  
   if (loading) {
     return (
       <div>

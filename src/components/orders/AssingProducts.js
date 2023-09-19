@@ -1,23 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Select from 'react-select'
 import PedidoContext from '@/context/pedidos/PedidoContext'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { OBTENER_PRODUCTOS } from "@/config/queries"
 
-const OBTENER_PRODCUTOS = gql`
-  query ObtenerProductos {
-    obtenerProductos {
-      id
-      nombre
-      precio
-      existencia
-    }
-  }
-`
-
-export default function AssingProducts() {
+function AssingProducts() {
   const [ productos, setProductos ] = useState([]);
   const pedidoContext = useContext(PedidoContext)
-  const { data, loading, error } = useQuery(OBTENER_PRODCUTOS)
+  const { data, loading, error } = useQuery(OBTENER_PRODUCTOS)
 
   useEffect(() => {
     pedidoContext?.agregarProductos(productos)
@@ -28,7 +18,6 @@ export default function AssingProducts() {
   function seleccionarProducto(clienteSeleccionado) {
     setProductos(clienteSeleccionado)
   }
-
 
   if (loading) return null;
 
@@ -50,3 +39,5 @@ export default function AssingProducts() {
     </>
   )
 }
+
+export default AssingProducts

@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from '@/components/Layout';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { MEJORES_CLIENTES } from "@/config/queries"
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 

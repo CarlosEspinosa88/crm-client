@@ -1,5 +1,16 @@
 import { gql } from '@apollo/client'
 
+export const OBTENER_USUARIO = gql`
+  query ObtenerUsuario {
+    obtenerUsuario {
+      id
+      nombre
+      apellido
+      email
+    }
+  }
+`
+
 export const OBTENER_CLIENTE = gql`
   query ObtenerCliente($id: ID!) {
     obtenerCliente(id: $id) {
