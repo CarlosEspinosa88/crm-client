@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import PedidoContext from '@/context/pedidos/PedidoContext'
 
-export default function ResumeProduct({ producto }) {
+function ResumeProduct({ producto }) {
   const [cantidad, setCantidad] = useState(0)
   const pedidoContext = useContext(PedidoContext)
   const { agregarCantidadProductos, actualizarTotal } = pedidoContext
@@ -47,3 +47,5 @@ export default function ResumeProduct({ producto }) {
     </div>
   )
 }
+
+export default ResumeProduct

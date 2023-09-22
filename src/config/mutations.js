@@ -1,5 +1,11 @@
 import { gql } from '@apollo/client';
 
+export const REMOVER_CLIENTE = gql`
+  mutation EliminarCliente($id: ID!) {
+    eliminarCliente(id: $id)
+  }
+`
+
 export const AUTENTICAR_NUEVO_USUARIO = gql`
   mutation AutenticarUsuario($input: AutenticarInput) {
     autenticarUsuario(input: $input) {
