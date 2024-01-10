@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client"
 import { OBTENER_PEDIDOS_VENDEDOR_COMPLETO } from '@/config/queries'
 
 function Pedidos() {
-  const { data, loading, error } = useQuery(OBTENER_PEDIDOS_VENDEDOR_COMPLETO)
+  const { data, loading, error } = useQuery(OBTENER_PEDIDOS_VENDEDOR_COMPLETO, { fetchPolicy: 'cache-and-network' })
 
   if (loading) {
     return (

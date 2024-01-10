@@ -9,7 +9,7 @@ import { OBTENER_CLIENTES } from '@/config/queries'
 
 function Home() {
   const router = useRouter()
-  const { data, loading, error } = useQuery(OBTENER_CLIENTES)
+  const { data, loading, error } = useQuery(OBTENER_CLIENTES, { fetchPolicy: 'cache-and-network' })
 
   if (loading) {
     return (

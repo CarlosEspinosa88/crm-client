@@ -5,21 +5,21 @@ import { OBTENER_USUARIO } from "@/config/queries"
 
 function HeaderBar() {
   const route = useRouter()
-  const { data, loading, error } = useQuery(OBTENER_USUARIO)
+  const { data, loading, error } = useQuery(OBTENER_USUARIO, { fetchPolicy: 'cache-and-network' })
   
   if (loading) {
     return (
-      <div>
+      <div> 
         <p className="text-gray-800 font-light" >Cargando....</p>
       </div>
     )
   }
 
-  function cerrarSesion() {
-    localStorage.removeItem('token')
+  async function cerrarSesion() {
+    await localStorage.removeItem('token')
     route.push('/login')
   }
-  
+
   return (
     <div className="sm:flex sm:justify-between mb-6 ">
       <p className="text-slate-800 text-sm mr-2 mb-5 lg:mb-0">Hola: {data?.obtenerUsuario?.nombre} {data?.obtenerUsuario?.apellido}</p>
