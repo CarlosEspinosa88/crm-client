@@ -94,8 +94,14 @@ export const OBTENER_PEDIDOS_VENDEDOR_COMPLETO = gql`
         cantidad
         id
       }
+      cliente {
+        id
+        nombre
+        apellido
+        email
+        telefono
+      }
       total
-      cliente
       vendedor
       creado
       estado
