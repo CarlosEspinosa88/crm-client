@@ -7,7 +7,7 @@ import { OBTENER_PRODUCTOS } from '@/config/queries'
 
 
 function Productos() {
-  const { data, loading, error } = useQuery(OBTENER_PRODUCTOS, { fetchPolicy: 'network-only' })
+  const { data, loading, error } = useQuery(OBTENER_PRODUCTOS, { fetchPolicy: 'cache-and-network' })
 
   if (loading) {
     return (
