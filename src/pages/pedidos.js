@@ -16,6 +16,14 @@ function Pedidos() {
     )
   }
 
+  if (error) {
+    return (
+      <Layout>
+        <p className="text-gray-800 font-light">Error de carga de datos....</p>
+      </Layout>
+    )
+  }
+
   return (
     <div>
       {!loading && data ? (
@@ -28,7 +36,7 @@ function Pedidos() {
             <p className="mt-5 text-center text-2xl">No hay pedidos aún</p>
           ) : (
             <>
-            {data.obtenerPedidosVendedor.map(( pedidos ) => (
+            {data?.obtenerPedidosVendedor.map(( pedidos ) => (
               <Order key={pedidos.id} pedidos={pedidos} />
             ))}
             </>
