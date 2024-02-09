@@ -11,7 +11,7 @@ function Pedidos() {
   if (loading) {
     return (
       <Layout>
-        <p className="text-gray-800 font-light">Cargando....</p>
+        <p className="text-gray-800 font-light">Cargando Pedidos</p>
       </Layout>
     )
   }
@@ -19,7 +19,7 @@ function Pedidos() {
   if (error) {
     return (
       <Layout>
-        <p className="text-gray-800 font-light">Error de carga de datos....</p>
+        <p className="text-gray-800 font-light">Error de carga de los pedidos</p>
       </Layout>
     )
   }
