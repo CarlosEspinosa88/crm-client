@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, waitFor } from "@testing-library/react";
 import { mockPedidos, errorMockPedidos } from '../../test/data-mocks'
-import { OBTENER_PEDIDOS_VENDEDOR_COMPLETO, OBTENER_USUARIO } from "@/config/queries";
 
 import Pedidos from "@/pages/pedidos";
 import Order from "@/components/Order";
@@ -38,6 +37,6 @@ describe('<Pedidos /> component', () => {
       </MockedProvider>
     )
 
-    expect(await screen.findByText(/Nombre producto: iPhone/i)).toBeInTheDocument()
+    expect(await screen.findByText(/iPhone 14/i)).toBeInTheDocument()
   })
 })

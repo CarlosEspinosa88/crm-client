@@ -12,7 +12,15 @@ function Productos() {
   if (loading) {
     return (
       <Layout>
-        <p className="text-gray-800 font-light">Cargando....</p>
+        <p className="text-gray-800 font-light">Cargando productos</p>
+      </Layout>
+    )
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <p className="text-gray-800 font-light">Error en la carga de los productos</p>
       </Layout>
     )
   }
